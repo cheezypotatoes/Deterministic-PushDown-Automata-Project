@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import stateImg from "../assets/StateImg.png";
 import StateWidget from "./State";
 import { useState, useEffect } from 'react';
@@ -12,11 +11,17 @@ export default function Screen() {
     useEffect(() => {
         const addState = (event) => {
             if (event.key == "p") {
+                const idGenerated = 'id-' + Date.now() + '-' + Math.floor(Math.random() * 10000) // Random id
                 const NewState = {
-                    id: statesOnScreen.length + 1,
+                    id: idGenerated,
                     src: stateImg
                 };
                 SetStatesOnScreen((prevStates) => [...prevStates, NewState]);
+
+                setPositions((prevPositions) => ({
+                    ...prevPositions,
+                    [idGenerated]: {x: 600, y: 300}, // Default location
+                  }));
             }
         };
     
@@ -30,14 +35,32 @@ export default function Screen() {
       }, [statesOnScreen]);
 
     const handleDragOver = (e) => {
-        e.preventDefault(); // Prevent default behavior to allow the drop
+        e.preventDefault();
     };
 
     const handleDrop = (e) => {
         e.preventDefault();
 
+        const { clientX, clientY } = e;
+
         const startCoords = JSON.parse(e.dataTransfer.getData("text/plain"));
+      
+        const offsetX = clientX - startCoords.startX;
+        const offsetY = clientY - startCoords.startY;
+
+        const name = startCoords.stateName;
+        const oldX = positions[name].x
+        const oldY = positions[name].y
+
+        // Update position
+        setPositions((prevPositions) => ({
+            ...prevPositions,
+            [name]: {x: oldX + offsetX, y: oldY + offsetY}, // Change position relative to its screen
+          }));
         
+        
+
+
     };
 
 
@@ -47,10 +70,8 @@ export default function Screen() {
          onDragOver={handleDragOver}
          onDrop={handleDrop}>
 
-
-
             {statesOnScreen.map((state) => (
-                <StateWidget key={state.id} state={state} />
+                <StateWidget key={state.id} state={state} stateName={state.id} position={positions[state.id]}/>
             ))}
         </div>
     );

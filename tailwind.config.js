@@ -4,7 +4,7 @@ export default {
   theme: {
     extend: {
       spacing: {
-        'stateSize': 'calc(16px * var(--pixel-size))',
+        'stateSize': 'calc(16px * var(--pixel-size))'
       },
     },
   },

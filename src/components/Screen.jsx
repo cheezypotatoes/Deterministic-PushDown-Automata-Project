@@ -1,17 +1,22 @@
+/* eslint-disable no-unused-vars */
 import stateImg from "../assets/StateImg.png";
+import StateWidget from "./State";
 import { useState, useEffect } from 'react';
 
 
 
 export default function Screen() {
     const [statesOnScreen, SetStatesOnScreen] = useState([]);
-
-
+    const [positions, setPositions] = useState({});
+    
     useEffect(() => {
         const addState = (event) => {
             if (event.key == "p") {
-                const newImage = stateImg;
-                SetStatesOnScreen([...statesOnScreen, newImage]);
+                const NewState = {
+                    id: statesOnScreen.length + 1,
+                    src: stateImg
+                };
+                SetStatesOnScreen((prevStates) => [...prevStates, NewState]);
             }
         };
     
@@ -24,13 +29,28 @@ export default function Screen() {
         };
       }, [statesOnScreen]);
 
+    const handleDragOver = (e) => {
+        e.preventDefault(); // Prevent default behavior to allow the drop
+    };
+
+    const handleDrop = (e) => {
+        e.preventDefault();
+
+        const startCoords = JSON.parse(e.dataTransfer.getData("text/plain"));
+        
+    };
 
 
     return (
-        <div className="flex justify-center items-center h-[90vh] w-[95vw]" id="MonitorWidgetHolder">
+        <div className="flex justify-center items-center h-[90vh] w-[95vw]"
+         id="MonitorWidgetHolder"
+         onDragOver={handleDragOver}
+         onDrop={handleDrop}>
 
-            {statesOnScreen.map((img, index) => (
-                <img key={index} src={img} className="w-stateSize h-stateSize" alt="State Image" />
+
+
+            {statesOnScreen.map((state) => (
+                <StateWidget key={state.id} state={state} />
             ))}
         </div>
     );

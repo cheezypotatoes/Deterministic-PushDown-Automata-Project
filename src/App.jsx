@@ -1,4 +1,5 @@
 import frame from "./assets/Frame 3.0.png"
+import starting from "./assets/StateImg.png"
 
 function App() {
   return (
@@ -7,6 +8,8 @@ function App() {
         style={{backgroundImage: `url(${frame})`, imageRendering: 'pixelated',}} id="Monitor">
       
         <div className="flex justify-center items-center h-[90vh] w-[95vw]" id="MonitorWidgetHolder">
+          <img src={starting} className="w-stateSize h-stateSize" alt="State Image" />
+
         </div>
         
       </div>

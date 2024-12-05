@@ -2,8 +2,19 @@
 export default {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      spacing: {
+        'stateSize': 'calc(16px * var(--pixel-size))',
+      },
+    },
   },
-  plugins: [],
-}
-
+  plugins: [
+    function ({ addBase }) {
+      addBase({
+        ':root': {
+          '--pixel-size': '4',
+        },
+      });
+    },
+  ],
+};

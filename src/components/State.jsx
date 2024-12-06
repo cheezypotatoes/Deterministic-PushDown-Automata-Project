@@ -15,13 +15,19 @@ export default function StateWidget({ state, stateName, position}) {
     function Click() {
         console.log("CLICKED" + stateName)
     }
+
+
+    const handleMouseDown = (e) => {
+        e.target.style.cursor = "grabbing"
+    }
+
   
     return (
         <img
             onMouseLeave={(e) => {e.target.src = state.src}}
             onMouseEnter={(e) => {e.target.src = StateImgHover; e.target.style.cursor = "grab"}}
             onClick={Click} 
-            onMouseDown={(e) => {e.target.style.cursor = "grabbing"}}
+            onMouseDown={handleMouseDown}
             key={state.id} 
             src={state.src} 
             onDragStart={handleDragStart}

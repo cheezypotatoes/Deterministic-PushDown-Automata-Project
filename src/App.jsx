@@ -1,5 +1,4 @@
 import frame from "./assets/images/Frame 3.0.png"
-
 import Screen from "./components/Screen";
 
 function App() {
@@ -8,7 +7,8 @@ function App() {
       <div className="flex justify-center items-center w-screen h-screen bg-center bg-no-repeat bg-contain image-rendering-pixelated"
         style={{backgroundImage: `url(${frame})`, imageRendering: 'pixelated',}} id="Monitor">
           
-        <Screen></Screen>
+        <Screen />
+        
         
       </div>
     </div>

@@ -66,7 +66,7 @@ export default function Screen() {
 
 
     return (
-        <div className="flex justify-center items-center h-[90vh] w-[95vw]"
+        <div className="flex justify-center items-center h-[80vh] w-[90vw]"
          id="MonitorWidgetHolder"
          style={{ userSelect: 'none' }}
          onDragOver={handleDragOver}

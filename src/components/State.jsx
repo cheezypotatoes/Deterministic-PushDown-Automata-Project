@@ -17,6 +17,7 @@ export default function StateWidget({ state, stateName, position}) {
     }
 
 
+
     const handleMouseDown = (e) => {
         e.target.style.cursor = "grabbing"
     }

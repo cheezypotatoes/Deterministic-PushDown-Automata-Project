@@ -7,7 +7,6 @@ import { useState, useEffect } from 'react';
 export default function Screen() {
     const [statesOnScreen, SetStatesOnScreen] = useState([]);
     const [positions, setPositions] = useState({});
-    console.log("Ee")
     
     useEffect(() => {
         const addState = (event) => {

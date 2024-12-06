@@ -1,4 +1,5 @@
 import stateImg from "../assets/images/StateImg.png";
+
 import StateWidget from "./State";
 import { useState, useEffect } from 'react';
 
@@ -7,6 +8,7 @@ import { useState, useEffect } from 'react';
 export default function Screen() {
     const [statesOnScreen, SetStatesOnScreen] = useState([]);
     const [positions, setPositions] = useState({});
+
     
     useEffect(() => {
         const addState = (event) => {

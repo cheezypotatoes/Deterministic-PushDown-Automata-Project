@@ -1,4 +1,4 @@
-import frame from "./assets/Frame 3.0.png"
+import frame from "./assets/images/Frame 3.0.png"
 
 import Screen from "./components/Screen";
 

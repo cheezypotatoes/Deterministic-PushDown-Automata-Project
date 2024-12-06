@@ -1,4 +1,4 @@
-import stateImg from "../assets/StateImg.png";
+import stateImg from "../assets/images/StateImg.png";
 import StateWidget from "./State";
 import { useState, useEffect } from 'react';
 

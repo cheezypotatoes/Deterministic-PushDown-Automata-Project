@@ -25,7 +25,7 @@ export default function InputPopUp({ isOpen, onClose, position , CloseModal}) {
 
             <div draggable
              onDragStart={handleDragStart}
-             className="w-[23vw] h-[5vh] bg-blue-500 z-6 relative"
+             className="w-[23vw] h-[5vh]z-6 relative"
              onMouseEnter={(e) => { e.target.style.cursor = "grab"; }}
              onMouseDown={handleMouseDown}
              alt="DraggableHeader">

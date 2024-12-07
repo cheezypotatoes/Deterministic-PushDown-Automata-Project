@@ -79,7 +79,7 @@ export default function Screen({showModal, CloseModal, isModalOpen}) {
             const screenHeight = screenDimension.height;
 
             const modalWidth = (25 / 100) * window.innerWidth; // 25vw
-            const modalHeight = (60 / 100) * window.innerHeight; // 60vh
+            const modalHeight = (55 / 100) * window.innerHeight; // 55vh
     
             // Constrain the newX to not go past the left or right boundaries of the ScreenDrop div
             newX = Math.max(screenDimension.left, Math.min(newX, screenDimension.left + screenWidth - modalWidth));

@@ -6,6 +6,9 @@ export default {
       spacing: {
         'stateSize': 'calc(16px * var(--pixel-size))'
       },
+      fontFamily: {
+        pixelify: ['Pixelify Sans', 'sans-serif'],
+      },
     },
   },
   plugins: [

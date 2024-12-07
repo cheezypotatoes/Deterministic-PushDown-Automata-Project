@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import PropTypes from 'prop-types';
 import StateImgHover from "../assets/images/StateImgHover.png";
 import EditText from "../assets/images/EditTextPopUp.svg";
@@ -5,7 +6,7 @@ import { useRef } from 'react';
 
 
 
-export default function StateWidget({ state, stateName, position}) {
+export default function StateWidget({ state, stateName, position, showModal, CloseModal, isModalOpen}) {
     
     const configButton = useRef(null)
     const showConfig = useRef(false)
@@ -17,7 +18,8 @@ export default function StateWidget({ state, stateName, position}) {
     };
 
     function ClickStateImg() {
-        if (!showConfig.current) {
+        // If there's already a modal
+        if (!showConfig.current && !isModalOpen) {
             configButton.current.style.display = 'block';
             showConfig.current = true;
         } else {
@@ -32,7 +34,7 @@ export default function StateWidget({ state, stateName, position}) {
     }
 
     function ShowConfigButton() {
-        console.log("Show")
+        showModal(true)
     }
 
   
@@ -66,7 +68,7 @@ export default function StateWidget({ state, stateName, position}) {
     );
 }
 
-// Prop validation
+
 StateWidget.propTypes = {
     state: PropTypes.shape({
         id: PropTypes.string.isRequired,
@@ -74,4 +76,8 @@ StateWidget.propTypes = {
     }).isRequired,
     stateName: PropTypes.string.isRequired,
     position: PropTypes.object.isRequired,
+    showModal: PropTypes.string.isRequired,
+    CloseModal: PropTypes.string.isRequired,
+    isModalOpen: PropTypes.string.isRequired,
+
 };

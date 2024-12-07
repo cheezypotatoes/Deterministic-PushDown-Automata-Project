@@ -10,12 +10,18 @@ export default function InputPopUp({ isOpen, onClose, position }) {
         e.dataTransfer.setData("text/plain", JSON.stringify({ startX: clientX, startY: clientY, stateName: "modal" }));
     };
 
+    const handleMouseDown = (e) => {
+        e.target.style.cursor = "grabbing"
+    }
+
     return (
         <div
+            onMouseDown={handleMouseDown}
+            onMouseEnter={(e) => {e.target.style.cursor = "grab"}}
             draggable
             className="w-[25vw] h-[50vh] bg-[#4D8061] cursor-move"
             onDragStart={handleDragStart}
-            style={{ position: 'absolute', top: position.y, left: position.x }}
+            style={{ position: 'absolute', top: position.y, left: position.x, userSelect: "none"}}
         >
         </div>
     );

@@ -3,18 +3,18 @@ import StateWidget from "./State";
 import PropTypes from 'prop-types';
 import InputPopUp from "./InputPopUp";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 
 
 export default function Screen({showModal, CloseModal, isModalOpen}) {
     const [statesOnScreen, SetStatesOnScreen] = useState([]);
     const [positions, setPositions] = useState({});
+    const ScreenDrop = useRef(null);
     
 
     
     useEffect(() => {
-
 
         setPositions((prevPositions) => ({
             ...prevPositions,
@@ -72,40 +72,34 @@ export default function Screen({showModal, CloseModal, isModalOpen}) {
         let newX = oldX + offsetX;
         let newY = oldY + offsetY;
 
+        const screenDimension = ScreenDrop.current.getBoundingClientRect();
         // If it's the modal, constrain it to a smaller range (example: inside a specific area)
         if (name === "modal") {
-            const containerWidth = window.innerWidth * 0.9;  // 90% of viewport width
-            const containerHeight = window.innerHeight * 0.6; // 60% of viewport height
+           
+            const screenWidth = screenDimension.width;
+            const screenHeight = screenDimension.height;
 
-            const containerLeftOffset = (window.innerWidth - containerWidth) / 2; // Left margin of the container
-            const containerTopOffset = (window.innerHeight - containerHeight) / 2; // Top margin of the container
-
-            const modalWidth = 300;  // Width of the modal
-            const modalHeight = 200; // Height of the modal
-            const padding = 20;      // Normal padding from edges
-            const bottomPadding = 50; // Extra padding when near the bottom
-            const topPadding = 10;   // Reduced padding when near the top
-
-            // Constrain X to keep the modal within container horizontally
-            newX = Math.max(
-                containerLeftOffset + padding, 
-                Math.min(containerLeftOffset + containerWidth - modalWidth - padding, newX)
-            );
-
-            // Check if we're placing near the bottom and apply extra bottom padding, or apply reduced top padding
-            const verticalPadding = (newY + modalHeight + padding) > (containerTopOffset + containerHeight) 
-                ? bottomPadding // Add extra bottom padding if near bottom
-                : topPadding;   // Use reduced top padding if not near the bottom
-
-            // Constrain Y to keep the modal within container vertically, with adjusted padding
-            newY = Math.max(
-                containerTopOffset + verticalPadding, 
-                Math.min(containerTopOffset + containerHeight - modalHeight - verticalPadding, newY)
-            );
-        }
-
+            const modalWidth = (25 / 100) * window.innerWidth; // 25vw
+            const modalHeight = (50 / 100) * window.innerHeight; // 50vh
+    
+            // Constrain the newX to not go past the left or right boundaries of the ScreenDrop div
+            newX = Math.max(screenDimension.left, Math.min(newX, screenDimension.left + screenWidth - modalWidth));
+    
+            // Constrain the newY to not go past the top or bottom boundaries of the ScreenDrop div
+            newY = Math.max(screenDimension.top, Math.min(newY, screenDimension.top + screenHeight - modalHeight));
+        } else {
+            // For non-modal elements, get the stateSize and calculate its size dynamically
+            const pixelSize = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--pixel-size')) || 1; // Default to 1 if not set
+            const elementWidth = 16 * pixelSize; // Example for stateSize: calc(16px * var(--pixel-size))
+            const elementHeight = 16 * pixelSize; // Example for stateSize: calc(16px * var(--pixel-size))
         
-            
+            // Constrain the newX to not go past the left or right boundaries of the ScreenDrop div
+            newX = Math.max(screenDimension.left, Math.min(newX, screenDimension.right - elementWidth));
+        
+            // Constrain the newY to not go past the top or bottom boundaries of the ScreenDrop div
+            newY = Math.max(screenDimension.top, Math.min(newY, screenDimension.bottom - elementHeight));
+        }
+        
 
         // Update position
         setPositions((prevPositions) => ({
@@ -122,7 +116,8 @@ export default function Screen({showModal, CloseModal, isModalOpen}) {
             id="MonitorWidgetHolder"
             style={{ userSelect: 'none' }}
             onDragOver={handleDragOver}
-            onDrop={handleDrop}>
+            onDrop={handleDrop}
+            ref={ScreenDrop}>
 
                 {statesOnScreen.map((state) => (
                     <StateWidget 

@@ -76,8 +76,8 @@ StateWidget.propTypes = {
     }).isRequired,
     stateName: PropTypes.string.isRequired,
     position: PropTypes.object.isRequired,
-    showModal: PropTypes.string.isRequired,
-    CloseModal: PropTypes.string.isRequired,
-    isModalOpen: PropTypes.string.isRequired,
+    showModal: PropTypes.func.isRequired,
+    CloseModal: PropTypes.func.isRequired,
+    isModalOpen: PropTypes.bool.isRequired,
 
 };

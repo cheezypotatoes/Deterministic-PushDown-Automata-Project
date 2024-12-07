@@ -17,7 +17,7 @@ export default function InputPopUp({ isOpen, onClose, position , CloseModal}) {
 
     return (
         <div
-            className="w-[25vw] h-[60vh] flex cursor-auto"
+            className="w-[25vw] h-[60vh] flex flex-col cursor-auto"
             style={{ position: 'absolute', top: position.y, left: position.x, userSelect: "none" }}>
             
              {/* Background image */}
@@ -31,15 +31,17 @@ export default function InputPopUp({ isOpen, onClose, position , CloseModal}) {
              alt="DraggableHeader">
              </div>
 
-             <h1 
-             className="text-[1rem] font-extrabold text-gray-800 ml-2 z-10 align-self-center h-[2rem] flex items-center justify-center cursor-pointer"
-             onClick={CloseModal}>X</h1>
+             <h1
+                className="text-[1.5rem] font-extrabold text-[#BEDC7F] absolute top-0.4 right-2 z-10 cursor-pointer flex items-center justify-center w-[2rem] h-[2rem] text-center mr-1"
+                onClick={CloseModal}>X</h1>
 
-       
+            <div className='w-[25vw] h-[60vh] z-10'>
+
+            </div>
 
            
             
-            
+    
         </div>
     );
 }    

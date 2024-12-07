@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import PropTypes from 'prop-types';
+import ModalBackground from "../assets/images/ModalBackground.svg"
 
 export default function InputPopUp({ isOpen, onClose, position }) {
     if (!isOpen) return null;
@@ -19,10 +20,12 @@ export default function InputPopUp({ isOpen, onClose, position }) {
             onMouseDown={handleMouseDown}
             onMouseEnter={(e) => {e.target.style.cursor = "grab"}}
             draggable
-            className="w-[25vw] h-[50vh] bg-[#4D8061] cursor-move"
+            className="w-[25vw] h-[50vh] cursor-move"
             onDragStart={handleDragStart}
-            style={{ position: 'absolute', top: position.y, left: position.x, userSelect: "none"}}
+            style={{position: 'absolute', top: position.y, left: position.x, userSelect: "none"}}
         >
+
+            <img src={ModalBackground}></img>
         </div>
     );
 }

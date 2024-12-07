@@ -586,6 +586,14 @@ video {
   height: calc(16px * var(--pixel-size));
 }
 
+.h-\[100vh\] {
+  height: 100vh;
+}
+
+.h-\[70vh\] {
+  height: 70vh;
+}
+
 .w-\[25vw\] {
   width: 25vw;
 }

@@ -17,7 +17,7 @@ export default function Screen({showModal, CloseModal, isModalOpen}) {
 
         setPositions((prevPositions) => ({
             ...prevPositions,
-            ["modal"]: {x: 600, y: 100}, // Default location
+            ["modal"]: {x: window.innerWidth / 2, y: window.innerHeight / 2}, // Default location
           }));
 
 
@@ -72,7 +72,7 @@ export default function Screen({showModal, CloseModal, isModalOpen}) {
         let newY = oldY + offsetY;
 
         const screenDimension = ScreenDrop.current.getBoundingClientRect();
-        // If it's the modal, constrain it to a smaller range (example: inside a specific area)
+        // If it's the modal
         if (name === "modal") {
            
             const screenWidth = screenDimension.width;
@@ -89,8 +89,8 @@ export default function Screen({showModal, CloseModal, isModalOpen}) {
         } else {
             // For non-modal elements, get the stateSize and calculate its size dynamically
             const pixelSize = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--pixel-size')) || 1; // Default to 1 if not set
-            const elementWidth = 16 * pixelSize; // Example for stateSize: calc(16px * var(--pixel-size))
-            const elementHeight = 16 * pixelSize; // Example for stateSize: calc(16px * var(--pixel-size))
+            const elementWidth = 16 * pixelSize;
+            const elementHeight = 16 * pixelSize;
         
             // Constrain the newX to not go past the left or right boundaries of the ScreenDrop div
             newX = Math.max(screenDimension.left, Math.min(newX, screenDimension.right - elementWidth));

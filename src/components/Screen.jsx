@@ -11,7 +11,6 @@ export default function Screen({showModal, CloseModal, isModalOpen}) {
     const [statesOnScreen, SetStatesOnScreen] = useState([]);
     const [positions, setPositions] = useState({});
     const ScreenDrop = useRef(null);
-    
 
     
     useEffect(() => {
@@ -33,7 +32,7 @@ export default function Screen({showModal, CloseModal, isModalOpen}) {
 
                 setPositions((prevPositions) => ({
                     ...prevPositions,
-                    [idGenerated]: {x: 600, y: 300}, // Default location
+                    [idGenerated]: {x: window.innerWidth / 2, y: window.innerHeight / 2}, // Default location
                   }));
             }
         };

@@ -131,6 +131,7 @@ export default function Screen({showModal, CloseModal, isModalOpen}) {
 
                 <InputPopUp 
                 position={positions["modal"]}
+                CloseModal={CloseModal}
                 isOpen={isModalOpen}
                 setPositions={setPositions}/>
 

@@ -35,7 +35,6 @@ class PDA {
     editPush(NodeName, newPush) {
         const NodeState = this.states[NodeName];
         NodeState.push = newPush
-        console.log(NodeState)
     }
 
     printStateInfos() {

@@ -6,13 +6,7 @@ import {Node, PushDownAutomataInstance} from "../functions/PushDownAutomata"
 import { useState, useEffect } from 'react';
 
 export default function InputPopUp({ isOpen, onClose, position , CloseModal, CurrentlySelecting}) {
-
-    
-
-    
     if (!isOpen) return null;
-    PushDownAutomataInstance.printStateInfos()
-
     
     const [Name, setName] = useState("");
     const [push, setPush] = useState("");

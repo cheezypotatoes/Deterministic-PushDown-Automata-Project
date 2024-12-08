@@ -163,7 +163,9 @@ class PDA {
     
 }
 
-export {Node, PDA}
+const PushDownAutomataInstance = new PDA()
+
+export {PushDownAutomataInstance, Node}
 
 
 

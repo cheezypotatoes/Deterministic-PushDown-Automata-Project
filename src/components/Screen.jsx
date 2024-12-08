@@ -2,6 +2,7 @@ import stateImg from "../assets/images/StateImg.png";
 import StateWidget from "./State";
 import PropTypes from 'prop-types';
 import InputPopUp from "./InputPopUp";
+import {Node, PushDownAutomataInstance} from "../functions/PushDownAutomata"
 
 import { useState, useEffect, useRef } from 'react';
 
@@ -25,8 +26,15 @@ export default function Screen({showModal, CloseModal, isModalOpen}) {
 
         const addState = (event) => {
             if (event.key == "p") {
+
                 stateCount.current += 1;
                 const Name = `Q${stateCount.current}`
+
+                // Create Node
+                const StateNode = new Node(Name)
+                PushDownAutomataInstance.addState(StateNode.stateName, StateNode)
+                PushDownAutomataInstance.printStateInfos();
+
                 const NewState = {
                     id: Name,
                     src: stateImg

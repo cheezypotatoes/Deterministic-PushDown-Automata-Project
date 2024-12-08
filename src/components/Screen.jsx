@@ -49,6 +49,8 @@ export default function Screen({showModal, CloseModal, isModalOpen}) {
                     ...prevPositions,
                     [Name]: {x: window.innerWidth / 2, y: window.innerHeight / 2}, // Default location
                   }));
+            } else if (event.key == "o") { // Debugging
+                PushDownAutomataInstance.printStateInfos()
             }
         };
     

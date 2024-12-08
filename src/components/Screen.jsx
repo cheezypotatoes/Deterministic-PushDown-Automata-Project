@@ -11,6 +11,8 @@ export default function Screen({showModal, CloseModal, isModalOpen}) {
     const [statesOnScreen, SetStatesOnScreen] = useState([]);
     const [positions, setPositions] = useState({});
     const ScreenDrop = useRef(null);
+    const stateCount = useRef(0);
+    const CurrentlySelecting = useRef(null);
 
     
     useEffect(() => {
@@ -23,16 +25,17 @@ export default function Screen({showModal, CloseModal, isModalOpen}) {
 
         const addState = (event) => {
             if (event.key == "p") {
-                const idGenerated = 'id-' + Date.now() + '-' + Math.floor(Math.random() * 10000) // Random id
+                stateCount.current += 1;
+                const Name = `Q${stateCount.current}`
                 const NewState = {
-                    id: idGenerated,
+                    id: Name,
                     src: stateImg
                 };
                 SetStatesOnScreen((prevStates) => [...prevStates, NewState]);
 
                 setPositions((prevPositions) => ({
                     ...prevPositions,
-                    [idGenerated]: {x: window.innerWidth / 2, y: window.innerHeight / 2}, // Default location
+                    [Name]: {x: window.innerWidth / 2, y: window.innerHeight / 2}, // Default location
                   }));
             }
         };
@@ -126,14 +129,16 @@ export default function Screen({showModal, CloseModal, isModalOpen}) {
                     position={positions[state.id]}
                     showModal={showModal}
                     CloseModal={CloseModal}
-                    isModalOpen={isModalOpen}/>
+                    isModalOpen={isModalOpen}
+                    CurrentlySelecting={CurrentlySelecting}/>
                 ))}
 
                 <InputPopUp 
                 position={positions["modal"]}
                 CloseModal={CloseModal}
                 isOpen={isModalOpen}
-                setPositions={setPositions}/>
+                setPositions={setPositions}
+                CurrentlySelecting={CurrentlySelecting}/>
 
             </div>
         </>

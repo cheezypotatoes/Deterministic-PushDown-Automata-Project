@@ -6,7 +6,7 @@ import { useRef } from 'react';
 
 
 
-export default function StateWidget({ state, stateName, position, showModal, CloseModal, isModalOpen}) {
+export default function StateWidget({ state, stateName, position, showModal, CloseModal, isModalOpen, CurrentlySelecting}) {
     
     const configButton = useRef(null)
     const showConfig = useRef(false)
@@ -21,6 +21,7 @@ export default function StateWidget({ state, stateName, position, showModal, Clo
         // If there's already a modal
         if (!showConfig.current && !isModalOpen) {
             configButton.current.style.display = 'block';
+            CurrentlySelecting.current = stateName;
             showConfig.current = true;
         } else {
             configButton.current.style.display = 'none';
@@ -35,6 +36,7 @@ export default function StateWidget({ state, stateName, position, showModal, Clo
 
     function ShowConfigButton() {
         showModal(true)
+        configButton.current.style.display = 'none';
     }
 
   
@@ -76,6 +78,7 @@ StateWidget.propTypes = {
     }).isRequired,
     stateName: PropTypes.string.isRequired,
     position: PropTypes.object.isRequired,
+    CurrentlySelecting: PropTypes.object.isRequired,
     showModal: PropTypes.func.isRequired,
     CloseModal: PropTypes.func.isRequired,
     isModalOpen: PropTypes.bool.isRequired,

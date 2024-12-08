@@ -2,7 +2,7 @@
 import PropTypes from 'prop-types';
 import ModalBackground from "../assets/images/ModalBackground.svg"
 
-export default function InputPopUp({ isOpen, onClose, position , CloseModal}) {
+export default function InputPopUp({ isOpen, onClose, position , CloseModal, CurrentlySelecting}) {
     if (!isOpen) return null;
 
     const handleDragStart = (e) => {
@@ -49,7 +49,7 @@ export default function InputPopUp({ isOpen, onClose, position , CloseModal}) {
                         <input
                             type="text"
                             name="StateName"
-                            value={"Q1"}
+                            value={CurrentlySelecting.current}
                             className="w-40 outline-none focus:outline-none border-none focus:ring-0 font-pixelify rounded p-2 flex-1 bg-[#112318] text-[#BEDC7F] text-center"
                         />
                     </div>
@@ -115,6 +115,7 @@ InputPopUp.propTypes = {
     isOpen: PropTypes.bool.isRequired,
     onClose: PropTypes.func,
     CloseModal:PropTypes.func,
+    CurrentlySelecting: PropTypes.object,
     position: PropTypes.shape({
         x: PropTypes.number.isRequired,
         y: PropTypes.number.isRequired,

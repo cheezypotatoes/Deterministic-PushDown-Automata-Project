@@ -5,6 +5,11 @@ import ModalBackground from "../assets/images/ModalBackground.svg"
 export default function InputPopUp({ isOpen, onClose, position , CloseModal, CurrentlySelecting}) {
     if (!isOpen) return null;
 
+    function EditChanges() {
+        const SelectedNode = CurrentlySelecting.current;
+        console.log(SelectedNode)
+    }
+
     const handleDragStart = (e) => {
         // Store the current mouse position and state name when dragging starts
         const { clientX, clientY } = e;
@@ -62,6 +67,7 @@ export default function InputPopUp({ isOpen, onClose, position , CloseModal, Cur
                             Push:
                         </label>
                         <input
+                            readOnly 
                             type="text"
                             name="Push"
                             value={JSON.stringify(
@@ -80,6 +86,7 @@ export default function InputPopUp({ isOpen, onClose, position , CloseModal, Cur
                             Pop:
                         </label>
                         <input
+                            readOnly 
                             type="text"
                             name="Pop"
                             value={JSON.stringify(
@@ -98,6 +105,7 @@ export default function InputPopUp({ isOpen, onClose, position , CloseModal, Cur
                             State Traverse:
                         </label>
                         <input
+                            readOnly 
                             type="text"
                             name="State Traverse"
                             value={JSON.stringify(

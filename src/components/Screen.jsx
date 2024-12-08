@@ -33,13 +33,15 @@ export default function Screen({showModal, CloseModal, isModalOpen}) {
                 // Create Node
                 const StateNode = new Node(Name)
                 PushDownAutomataInstance.addState(StateNode.stateName, StateNode)
+                PushDownAutomataInstance.addStateCondition(StateNode.stateName, {}, {}, {})
 
                 const NewState = {
                     id: Name,
                     src: stateImg,
-                    push: {"0": "1", "1": null},
-                    pop: {"1": "0", "0": null},
-                    toTraverse: {"0": "Q1", "1": "Q2"}
+                    // Get its push, pop, to traverse directly
+                    push: PushDownAutomataInstance.returnPush(StateNode.stateName),
+                    pop: PushDownAutomataInstance.returnPop(StateNode.stateName),
+                    toTraverse: PushDownAutomataInstance.returnTraverseNode(StateNode.stateName),
                 };
                 SetStatesOnScreen((prevStates) => [...prevStates, NewState]);
 

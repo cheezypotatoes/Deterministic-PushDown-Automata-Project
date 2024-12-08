@@ -7,7 +7,6 @@ import { useRef } from 'react';
 
 
 export default function StateWidget({ state, stateName, position, showModal, CloseModal, isModalOpen, CurrentlySelecting}) {
-    
     const configButton = useRef(null)
     const showConfig = useRef(false)
 
@@ -18,8 +17,6 @@ export default function StateWidget({ state, stateName, position, showModal, Clo
     };
 
     function ClickStateImg() { 
-        console.log(CurrentlySelecting.current)
-
         // If there's already a modal
         if (!showConfig.current && !isModalOpen) {
             configButton.current.style.display = 'block';

@@ -19,6 +19,19 @@ class PDA {
         }
     }
 
+
+    returnPush(NodeName) {
+        return this.states[NodeName].push
+    }
+
+    returnPop(NodeName) {
+        return this.states[NodeName].pop
+    }
+
+    returnTraverseNode(NodeName) {
+        return this.states[NodeName].input
+    }
+
     editPush(NodeName, newPush) {
         const Node = this.stack[NodeName];
         console.log(newPush)

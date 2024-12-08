@@ -19,6 +19,12 @@ class PDA {
         }
     }
 
+    editPush(NodeName, newPush) {
+        const Node = this.stack[NodeName];
+        console.log(newPush)
+        console.log(Node)
+    }
+
     printStateInfos() {
         for (let key in this.states) {
             const state = this.states[key]

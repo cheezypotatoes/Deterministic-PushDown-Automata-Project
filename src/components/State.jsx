@@ -17,11 +17,13 @@ export default function StateWidget({ state, stateName, position, showModal, Clo
         e.dataTransfer.setData("text/plain", JSON.stringify({ startX: clientX, startY: clientY, stateName: stateName}));
     };
 
-    function ClickStateImg() {
+    function ClickStateImg() { 
+        console.log(CurrentlySelecting.current)
+
         // If there's already a modal
         if (!showConfig.current && !isModalOpen) {
             configButton.current.style.display = 'block';
-            CurrentlySelecting.current = stateName;
+            CurrentlySelecting.current = state;
             showConfig.current = true;
         } else {
             configButton.current.style.display = 'none';

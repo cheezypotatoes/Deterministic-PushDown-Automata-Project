@@ -47,9 +47,10 @@ export default function InputPopUp({ isOpen, onClose, position , CloseModal, Cur
                             State name:
                         </label>
                         <input
+                            readOnly 
                             type="text"
                             name="StateName"
-                            value={CurrentlySelecting.current}
+                            value={CurrentlySelecting.current.id}
                             className="w-40 outline-none focus:outline-none border-none focus:ring-0 font-pixelify rounded p-2 flex-1 bg-[#112318] text-[#BEDC7F] text-center"
                         />
                     </div>
@@ -61,9 +62,13 @@ export default function InputPopUp({ isOpen, onClose, position , CloseModal, Cur
                             Push:
                         </label>
                         <input
-                            type="StateName"
+                            type="text"
                             name="Push"
-                            value={"[0:1,0:1]"}
+                            value={JSON.stringify(
+                                CurrentlySelecting.current.push,
+                                null,  // This is to format the output with indentation.
+                                2      // This sets the number of spaces for indentation (2 spaces in this case).
+                            )}
                             className="w-40 outline-none focus:outline-none border-none focus:ring-0 font-pixelify rounded p-2 flex-1 bg-[#112318] text-[#BEDC7F] text-center"
                         />
                     </div>
@@ -77,7 +82,11 @@ export default function InputPopUp({ isOpen, onClose, position , CloseModal, Cur
                         <input
                             type="text"
                             name="Pop"
-                            value={"[0:1,0:1]"}
+                            value={JSON.stringify(
+                                CurrentlySelecting.current.pop,
+                                null,  // This is to format the output with indentation.
+                                2      // This sets the number of spaces for indentation (2 spaces in this case).
+                            )}
                             className="w-40 outline-none focus:outline-none border-none focus:ring-0 font-pixelify rounded p-2 flex-1 bg-[#112318] text-[#BEDC7F] text-center"
                         />
                     </div>
@@ -91,7 +100,11 @@ export default function InputPopUp({ isOpen, onClose, position , CloseModal, Cur
                         <input
                             type="text"
                             name="State Traverse"
-                            value={"[0:Q0,1:Q2]"}
+                            value={JSON.stringify(
+                                CurrentlySelecting.current.toTraverse,
+                                null,  // This is to format the output with indentation.
+                                2      // This sets the number of spaces for indentation (2 spaces in this case).
+                            )}
                             className="w-40 outline-none focus:outline-none border-none focus:ring-0 font-pixelify rounded p-2 flex-1 bg-[#112318] text-[#BEDC7F] text-center"
                         />
                     </div>

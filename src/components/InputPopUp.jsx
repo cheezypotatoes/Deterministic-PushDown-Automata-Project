@@ -1,13 +1,55 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable no-unused-vars */
 import PropTypes from 'prop-types';
 import ModalBackground from "../assets/images/ModalBackground.svg"
+import {Node, PushDownAutomataInstance} from "../functions/PushDownAutomata"
+import { useState, useEffect } from 'react';
 
 export default function InputPopUp({ isOpen, onClose, position , CloseModal, CurrentlySelecting}) {
+
+    
+
+    
     if (!isOpen) return null;
+    PushDownAutomataInstance.printStateInfos()
+
+    
+    const [Name, setName] = useState("");
+    const [push, setPush] = useState("");
+
+    // Update when modal is visible
+    useEffect(() => {
+        if (isOpen) {
+            setName(CurrentlySelecting.current?.id || "");
+            setPush(JSON.stringify(CurrentlySelecting.current?.push || {}));
+        }
+    }, [isOpen, CurrentlySelecting]);
+
+
+    const pushChange = (e) => {
+        setPush(e.target.value);
+      };
 
     function EditChanges() {
-        const SelectedNode = CurrentlySelecting.current;
-        console.log(SelectedNode)
+        const correctedPush = push.replace(/(\w+):/g, '"$1":').replace(/:\s*(\w+)/g, ': "$1"');
+        
+        try {
+            
+            const parsedPush = JSON.parse(correctedPush);  // Parse the fixed string
+            // Check if parsedPush is an empty object
+            if (Object.keys(parsedPush).length === 0) {
+                console.log("CorrectedPush is an empty object. No changes made.");
+                return;
+            }
+
+            // Proceed if not empty
+            PushDownAutomataInstance.editPush(Name, parsedPush);
+            setPush(JSON.stringify(PushDownAutomataInstance.returnPush(Name)));
+            CurrentlySelecting.current.push = parsedPush // Update its data in frontend
+        } catch (error) {
+            console.log('Invalid JSON string');
+        }
+       
     }
 
     const handleDragStart = (e) => {
@@ -55,7 +97,7 @@ export default function InputPopUp({ isOpen, onClose, position , CloseModal, Cur
                             readOnly 
                             type="text"
                             name="StateName"
-                            value={CurrentlySelecting.current.id}
+                            value={Name}
                             className="w-40 outline-none focus:outline-none border-none focus:ring-0 font-pixelify rounded p-2 flex-1 bg-[#112318] text-[#BEDC7F] text-center"
                         />
                     </div>
@@ -67,14 +109,10 @@ export default function InputPopUp({ isOpen, onClose, position , CloseModal, Cur
                             Push:
                         </label>
                         <input
-                            readOnly 
+                            onChange={(e) => {pushChange(e)}}
                             type="text"
                             name="Push"
-                            value={JSON.stringify(
-                                CurrentlySelecting.current.push,
-                                null,  // This is to format the output with indentation.
-                                2      // This sets the number of spaces for indentation (2 spaces in this case).
-                            )}
+                            value={push}
                             className="w-40 outline-none focus:outline-none border-none focus:ring-0 font-pixelify rounded p-2 flex-1 bg-[#112318] text-[#BEDC7F] text-center"
                         />
                     </div>
@@ -117,7 +155,8 @@ export default function InputPopUp({ isOpen, onClose, position , CloseModal, Cur
                         />
                     </div>
 
-                    <h1 className="font-pixelify text-1xl w-full text-center text-[#BEDC7F] bg-[#112318] border border-[#BEDC7F] rounded p-3 cursor-pointer hover:bg-[#BEDC7F] hover:text-[#112318]">
+                    <h1 className="font-pixelify text-1xl w-full text-center text-[#BEDC7F] bg-[#112318] border border-[#BEDC7F] rounded p-3 cursor-pointer hover:bg-[#BEDC7F] hover:text-[#112318]"
+                        onClick={EditChanges}>
                         Apply Changes
                     </h1>
                     

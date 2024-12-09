@@ -12,7 +12,7 @@ export default function Screen({showModal, CloseModal, isModalOpen}) {
     const [statesOnScreen, SetStatesOnScreen] = useState([]);
     const [positions, setPositions] = useState({});
     const ScreenDrop = useRef(null);
-    const stateCount = useRef(0);
+    const stateCount = useRef(-1);
     const CurrentlySelecting = useRef(null);
 
     
@@ -34,7 +34,7 @@ export default function Screen({showModal, CloseModal, isModalOpen}) {
                 // Create Node
                 const StateNode = new Node(Name)
                 PushDownAutomataInstance.addState(StateNode.stateName, StateNode)
-                PushDownAutomataInstance.addStateCondition(StateNode.stateName, {}, {}, {})
+                PushDownAutomataInstance.addStateCondition(StateNode.stateName, null, null, null)
 
                 const NewState = {
                     id: Name,
@@ -52,6 +52,10 @@ export default function Screen({showModal, CloseModal, isModalOpen}) {
                   }));
             } else if (event.key == "o") { // Debugging
                 PushDownAutomataInstance.printStateInfos()
+            } else if (event.key == "i") { // Temporary
+                let userInput = prompt("String:");
+                let userInputAsString = String(userInput);
+                PushDownAutomataInstance.validateInput(userInputAsString)
             }
         };
     

@@ -19,7 +19,7 @@ export default function InputPopUp({ isOpen, onClose, position , CloseModal, Cur
             setName(CurrentlySelecting.current?.id || "");
             setPush(JSON.stringify(CurrentlySelecting.current?.push || {}));
             setPop(JSON.stringify(CurrentlySelecting.current?.pop || {}));
-            setStateTraverse(JSON.stringify(CurrentlySelecting.current?.traverse || {}))
+            setStateTraverse(JSON.stringify(CurrentlySelecting.current?.toTraverse || {}))
         }
     }, [isOpen, CurrentlySelecting]);
 

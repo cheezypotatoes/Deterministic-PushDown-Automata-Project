@@ -32,6 +32,11 @@ class PDA {
         return this.states[NodeName].input
     }
 
+    editTraverse(NodeName, newTraverse) {
+        const NodeState = this.states[NodeName];
+        NodeState.input = newTraverse
+    }
+
     editPush(NodeName, newPush) {
         const NodeState = this.states[NodeName];
         NodeState.push = newPush

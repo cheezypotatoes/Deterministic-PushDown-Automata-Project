@@ -26,6 +26,7 @@ export default function Screen({showModal, CloseModal, isModalOpen}) {
 
         const addState = (event) => {
             if (event.key == "p") {
+                
 
                 stateCount.current += 1;
                 const Name = `Q${stateCount.current}`

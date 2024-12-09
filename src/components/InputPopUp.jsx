@@ -11,6 +11,7 @@ export default function InputPopUp({ isOpen, onClose, position , CloseModal, Cur
     const [Name, setName] = useState("");
     const [push, setPush] = useState("");
     const [pop, setPop] = useState("");
+    const [traverse, setStateTraverse] = useState("");
 
     // Update when modal is visible
     useEffect(() => {
@@ -18,9 +19,14 @@ export default function InputPopUp({ isOpen, onClose, position , CloseModal, Cur
             setName(CurrentlySelecting.current?.id || "");
             setPush(JSON.stringify(CurrentlySelecting.current?.push || {}));
             setPop(JSON.stringify(CurrentlySelecting.current?.pop || {}));
+            setStateTraverse(JSON.stringify(CurrentlySelecting.current?.traverse || {}))
         }
     }, [isOpen, CurrentlySelecting]);
 
+
+    const traverseChange = (e) => {
+        setStateTraverse(e.target.value);
+      };
 
     const pushChange = (e) => {
         setPush(e.target.value);
@@ -48,6 +54,7 @@ export default function InputPopUp({ isOpen, onClose, position , CloseModal, Cur
             // Proceed if not empty
             PushDownAutomataInstance.editPush(Name, parsedPush);
             setPush(JSON.stringify(PushDownAutomataInstance.returnPush(Name)));
+            
             CurrentlySelecting.current.push = parsedPush // Update its data in frontend
         } catch (error) {
             console.log('Invalid JSON string');
@@ -73,10 +80,31 @@ export default function InputPopUp({ isOpen, onClose, position , CloseModal, Cur
             console.log('Invalid JSON string');
         }
     }
+
+    const EditTraverse = (traverse) => {
+        const correctedTraverse = TurnIntoHash(traverse)
+        
+        try {
+            const parsedTraverse = JSON.parse(correctedTraverse);  // Parse the fixed string
+            // Check if parsedPush is an empty object
+            if (Object.keys(parsedTraverse).length === 0) {
+                console.log("CorrectedPush is an empty object. No changes made.");
+                return;
+            }
+
+            // Proceed if not empty
+            PushDownAutomataInstance.editTraverse(Name, parsedTraverse);
+            setStateTraverse(JSON.stringify(PushDownAutomataInstance.returnTraverseNode(Name))); // Correctly update pop here
+            CurrentlySelecting.current.toTraverse = parsedTraverse; // Update its data in frontend
+        } catch (error) {
+            console.log('Invalid JSON string');
+        }
+    }
     
     function EditChanges() {
         EditPush(push)
         EditPop(pop)
+        EditTraverse(traverse)
        
     }
 
@@ -167,14 +195,10 @@ export default function InputPopUp({ isOpen, onClose, position , CloseModal, Cur
                             State Traverse:
                         </label>
                         <input
-                            readOnly 
+                            onChange={(e) => {traverseChange(e)}}
                             type="text"
                             name="State Traverse"
-                            value={JSON.stringify(
-                                CurrentlySelecting.current.toTraverse,
-                                null,  // This is to format the output with indentation.
-                                2      // This sets the number of spaces for indentation (2 spaces in this case).
-                            )}
+                            value={traverse}
                             className="w-40 outline-none focus:outline-none border-none focus:ring-0 font-pixelify rounded p-2 flex-1 bg-[#112318] text-[#BEDC7F] text-center"
                         />
                     </div>

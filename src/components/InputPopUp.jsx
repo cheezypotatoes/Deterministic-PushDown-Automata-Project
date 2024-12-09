@@ -10,12 +10,14 @@ export default function InputPopUp({ isOpen, onClose, position , CloseModal, Cur
     
     const [Name, setName] = useState("");
     const [push, setPush] = useState("");
+    const [pop, setPop] = useState("");
 
     // Update when modal is visible
     useEffect(() => {
         if (isOpen) {
             setName(CurrentlySelecting.current?.id || "");
             setPush(JSON.stringify(CurrentlySelecting.current?.push || {}));
+            setPop(JSON.stringify(CurrentlySelecting.current?.pop || {}));
         }
     }, [isOpen, CurrentlySelecting]);
 
@@ -24,11 +26,18 @@ export default function InputPopUp({ isOpen, onClose, position , CloseModal, Cur
         setPush(e.target.value);
       };
 
-    function EditChanges() {
-        const correctedPush = push.replace(/(\w+):/g, '"$1":').replace(/:\s*(\w+)/g, ': "$1"');
+    const popChange= (e) => {
+        setPop(e.target.value);
+      }; 
+
+    const TurnIntoHash = (string) => {
+        return string.replace(/(\w+):/g, '"$1":').replace(/:\s*(\w+)/g, ': "$1"');
+    }
+
+    const EditPush = (push) => {
+        const correctedPush = TurnIntoHash(push)
         
         try {
-            
             const parsedPush = JSON.parse(correctedPush);  // Parse the fixed string
             // Check if parsedPush is an empty object
             if (Object.keys(parsedPush).length === 0) {
@@ -43,6 +52,31 @@ export default function InputPopUp({ isOpen, onClose, position , CloseModal, Cur
         } catch (error) {
             console.log('Invalid JSON string');
         }
+    }
+
+    const EditPop = (pop) => {
+        const correctedPop = TurnIntoHash(pop)
+        
+        try {
+            const parsedPop = JSON.parse(correctedPop);  // Parse the fixed string
+            // Check if parsedPush is an empty object
+            if (Object.keys(parsedPop).length === 0) {
+                console.log("CorrectedPush is an empty object. No changes made.");
+                return;
+            }
+
+            // Proceed if not empty
+            PushDownAutomataInstance.editPop(Name, parsedPop);
+            setPop(JSON.stringify(PushDownAutomataInstance.returnPop(Name))); // Correctly update pop here
+            CurrentlySelecting.current.pop = parsedPop; // Update its data in frontend
+        } catch (error) {
+            console.log('Invalid JSON string');
+        }
+    }
+    
+    function EditChanges() {
+        EditPush(push)
+        EditPop(pop)
        
     }
 
@@ -118,14 +152,10 @@ export default function InputPopUp({ isOpen, onClose, position , CloseModal, Cur
                             Pop:
                         </label>
                         <input
-                            readOnly 
+                            onChange={(e) => {popChange(e)}}
                             type="text"
                             name="Pop"
-                            value={JSON.stringify(
-                                CurrentlySelecting.current.pop,
-                                null,  // This is to format the output with indentation.
-                                2      // This sets the number of spaces for indentation (2 spaces in this case).
-                            )}
+                            value={pop}
                             className="w-40 outline-none focus:outline-none border-none focus:ring-0 font-pixelify rounded p-2 flex-1 bg-[#112318] text-[#BEDC7F] text-center"
                         />
                     </div>

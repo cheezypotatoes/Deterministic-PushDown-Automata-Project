@@ -37,6 +37,11 @@ class PDA {
         NodeState.push = newPush
     }
 
+    editPop(NodeName, newPop) {
+        const NodeState = this.states[NodeName];
+        NodeState.pop = newPop
+    }
+
     printStateInfos() {
         for (let key in this.states) {
             const state = this.states[key]

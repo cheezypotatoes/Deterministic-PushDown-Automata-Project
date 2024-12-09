@@ -37,7 +37,10 @@ export default function InputPopUp({ isOpen, onClose, position , CloseModal, Cur
       }; 
 
     const TurnIntoHash = (string) => {
-        return string.replace(/(\w+):/g, '"$1":').replace(/:\s*(\w+)/g, ': "$1"');
+        return string
+        .replace(/(\w+):/g, '"$1":') // Add quotes around keys
+        .replace(/:\s*(\w+)/g, ': "$1"') // Add quotes around values
+        .replace(/"null"/g, 'null'); // Replace "null" with actual null
     }
 
     const EditPush = (push) => {

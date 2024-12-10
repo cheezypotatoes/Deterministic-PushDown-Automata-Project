@@ -2,31 +2,36 @@ import stateImg from "../assets/images/StateImg.png";
 import StateWidget from "./State";
 import PropTypes from 'prop-types';
 import InputPopUp from "./InputPopUp";
+import ValidatorModal from "./InputValidator"
 import {Node, PushDownAutomataInstance} from "../functions/PushDownAutomata"
 
 import { useState, useEffect, useRef } from 'react';
 
 
 
-export default function Screen({showModal, CloseModal, isModalOpen}) {
+export default function Screen({showModal, CloseModal, isModalOpen, isValidatorOpen, ShowValidator}) {
+
     const [statesOnScreen, SetStatesOnScreen] = useState([]);
     const [positions, setPositions] = useState({});
     const ScreenDrop = useRef(null);
     const stateCount = useRef(-1);
     const CurrentlySelecting = useRef(null);
-
+    
     
     useEffect(() => {
 
         setPositions((prevPositions) => ({
             ...prevPositions,
-            ["modal"]: {x: window.innerWidth / 2, y: window.innerHeight / 2}, // Default location
+            ["validatorModal"]: {x: window.innerWidth / 2 - 300, y: window.innerHeight / 2 - 200}, // Default location
+        }));
+
+        setPositions((prevPositions) => ({
+            ...prevPositions,
+            ["modal"]: {x: window.innerWidth / 2 + -500, y: window.innerHeight / 2 - 200}, // Default location
           }));
 
-
         const addState = (event) => {
-            if (event.key == "p") {
-                
+            if (event.key == "p") {     
 
                 stateCount.current += 1;
                 const Name = `Q${stateCount.current}`
@@ -52,10 +57,8 @@ export default function Screen({showModal, CloseModal, isModalOpen}) {
                   }));
             } else if (event.key == "o") { // Debugging
                 PushDownAutomataInstance.printStateInfos()
-            } else if (event.key == "i") { // Temporary
-                let userInput = prompt("String:");
-                let userInputAsString = String(userInput);
-                PushDownAutomataInstance.validateInput(userInputAsString)
+            } else if (event.key == "i") {
+                ShowValidator()
             }
         };
     
@@ -69,7 +72,7 @@ export default function Screen({showModal, CloseModal, isModalOpen}) {
 
 
 
-      }, [statesOnScreen]);
+      }, [statesOnScreen, ShowValidator]);
 
     const handleDragOver = (e) => {
         e.preventDefault();
@@ -108,7 +111,22 @@ export default function Screen({showModal, CloseModal, isModalOpen}) {
     
             // Constrain the newY to not go past the top or bottom boundaries of the ScreenDrop div
             newY = Math.max(screenDimension.top, Math.min(newY, screenDimension.top + screenHeight - modalHeight));
-        } else {
+        } else if (name === "validatorModal") {
+            console.log(name)
+            const screenWidth = screenDimension.width;
+            const screenHeight = screenDimension.height;
+
+            const modalWidth = (25 / 100) * window.innerWidth; // 25vw
+            const modalHeight = (55 / 100) * window.innerHeight; // 55vh
+    
+            // Constrain the newX to not go past the left or right boundaries of the ScreenDrop div
+            newX = Math.max(screenDimension.left, Math.min(newX, screenDimension.left + screenWidth - modalWidth));
+    
+            // Constrain the newY to not go past the top or bottom boundaries of the ScreenDrop div
+            newY = Math.max(screenDimension.top, Math.min(newY, screenDimension.top + screenHeight - modalHeight));
+        }
+        
+        else {
             // For non-modal elements, get the stateSize and calculate its size dynamically
             const pixelSize = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--pixel-size')) || 1; // Default to 1 if not set
             const elementWidth = 16 * pixelSize;
@@ -159,6 +177,14 @@ export default function Screen({showModal, CloseModal, isModalOpen}) {
                 setPositions={setPositions}
                 CurrentlySelecting={CurrentlySelecting}/>
 
+               <ValidatorModal 
+               isValidatorOpen={isValidatorOpen}
+               ValidatorModalPosition={positions["validatorModal"]} />
+                
+              
+
+                
+
             </div>
         </>
     );
@@ -168,5 +194,7 @@ Screen.propTypes = {
     showModal: PropTypes.func.isRequired,
     CloseModal: PropTypes.func.isRequired,
     isModalOpen: PropTypes.bool.isRequired,
+    isValidatorOpen: PropTypes.bool.isRequired,
+    ShowValidator: PropTypes.func.isRequired,
 
 };

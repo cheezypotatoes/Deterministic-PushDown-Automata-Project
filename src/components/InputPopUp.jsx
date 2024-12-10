@@ -39,8 +39,27 @@ export default function InputPopUp({ isOpen, onClose, position , CloseModal, Cur
     const TurnIntoHash = (string) => {
         return string
         .replace(/(\w+):/g, '"$1":') // Add quotes around keys
-        .replace(/:\s*(\w+)/g, ': "$1"') // Add quotes around values
-        .replace(/"null"/g, 'null'); // Replace "null" with actual null
+        .replace(/:\s*([\w-]+)/g, (match, p1) => {
+            // Check if the value is a keyword that shouldn't be wrapped in quotes (e.g., null, true, false)
+            if (['null', 'true', 'false'].includes(p1)) {
+                return `: ${p1}`;
+            }
+            // Wrap the value in quotes otherwise
+            return `: "${p1}"`;
+        })
+        .replace(/"null"/g, 'null') // Replace "null" with actual null
+        .replace(/:\s*\[([^\]]*)\]/g, (match, p1) => {
+            // Convert array-like strings into JSON arrays
+            const arrayItems = p1.split(',').map(item => item.trim());
+            const jsonArray = arrayItems.map(item => {
+                if (/^(null|true|false|\d+|".*")$/.test(item)) {
+                    // Keep null, true, false, numbers, or strings already wrapped in quotes
+                    return item;
+                }
+                return `"${item}"`; // Wrap everything else in quotes
+            });
+            return `: [${jsonArray.join(', ')}]`;
+        });
     }
 
     const EditPush = (push) => {

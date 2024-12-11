@@ -85,11 +85,16 @@ class PDA {
     validateResult(stringInput, autoReject) {
         if (this.stack.length === 0 && !autoReject) {
             console.log(`String = "${stringInput}" Reaches Final State (Accepted)`)
+            this.stack = []
+            return true
         } else {
+            this.stack = []
             console.log(`String = "${stringInput}" Failed To Reach Final State With Stack Not Empty (REJECTED)`)
+            return false
         }
 
-        this.stack = []
+       
+        
     }
 
     validatePopper(stackFront, toPop) {
@@ -184,7 +189,7 @@ class PDA {
             
         }
 
-        this.validateResult(stringInput, autoReject);
+        return this.validateResult(stringInput, autoReject);
        
     }
 

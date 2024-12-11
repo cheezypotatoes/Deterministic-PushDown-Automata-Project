@@ -7,6 +7,7 @@ export default function ValidatorModal({ isValidatorOpen ,ValidatorModalPosition
     if (!isValidatorOpen) return null;
     
     const [input, setInput] = useState("");
+    const [result, setResult] = useState("")
     
 
     const handleDragStart = (e) => {
@@ -19,12 +20,17 @@ export default function ValidatorModal({ isValidatorOpen ,ValidatorModalPosition
     }
 
     function validateInput() {
-        PushDownAutomataInstance.validateInput(input)
+        const result = PushDownAutomataInstance.validateInput(input)
+        if (result) {
+            setResult("Accepted")
+            return
+        }
+        setResult("Rejected")
     }
 
     return (
         <div
-            className="w-[25vw] h-[50vh] flex flex-col cursor-auto"
+            className="w-[25vw]  flex flex-col cursor-auto"
             style={{ position: 'absolute', top: ValidatorModalPosition.y, left: ValidatorModalPosition.x, userSelect: "none" }}>
             
         
@@ -38,12 +44,12 @@ export default function ValidatorModal({ isValidatorOpen ,ValidatorModalPosition
 
 
              <div className='z-10 bg-[#4d8061] pt-2 pb-2'>
-                <h1 className="font-pixelify text-3xl w-full text-center text-[#BEDC7F]">Input:</h1>
+                <h1 className="font-pixelify text-3xl w-full text-center text-[#BEDC7F]">{`Input: ${result}`}</h1>
                 <form className="flex flex-col items-start p-4 space-y-3 z-10 w-full">
                         <input
                             type="text"
                             name="Input"
-                            onChange={(e) => {setInput(e.target.value)}}
+                            onChange={(e) => {setInput(e.target.value); if (e.target.value.length == 0) {setResult("")}}}
                             value={input}
                             className="w-[23vw] outline-none focus:outline-none border-none focus:ring-0 font-pixelify rounded p-2 flex-1 bg-[#112318] text-[#BEDC7F] text-center"
                         />
@@ -54,7 +60,12 @@ export default function ValidatorModal({ isValidatorOpen ,ValidatorModalPosition
                  className="w-[15vw] font-pixelify text-1xl text-center text-[#BEDC7F] bg-[#112318] border border-[#BEDC7F] rounded p-3 cursor-pointer hover:bg-[#BEDC7F] hover:text-[#112318] mx-auto flex items-center justify-center">
                     Apply Changes
                 </h1>
+
+                
             </div>
+
+
+            
         </div>
     );
 }    

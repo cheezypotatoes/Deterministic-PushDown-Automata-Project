@@ -19,6 +19,10 @@ class PDA {
         }
     }
 
+    returnAllTrailState(stateName) {
+        return this.states[stateName].input
+    }
+
 
     returnPush(NodeName) {
         return this.states[NodeName].push

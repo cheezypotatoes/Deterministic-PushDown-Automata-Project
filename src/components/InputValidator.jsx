@@ -8,6 +8,7 @@ export default function ValidatorModal({ isValidatorOpen ,ValidatorModalPosition
     
     const [input, setInput] = useState("");
     const [result, setResult] = useState("")
+    const [isPalindrome, setIsPalindrome] = useState(false);
     
 
     const handleDragStart = (e) => {
@@ -20,7 +21,7 @@ export default function ValidatorModal({ isValidatorOpen ,ValidatorModalPosition
     }
 
     function validateInput() {
-        const result = PushDownAutomataInstance.validateInput(input)
+        const result = PushDownAutomataInstance.validateInput(input, isPalindrome)
         if (result) {
             setResult("Accepted")
             return
@@ -58,8 +59,27 @@ export default function ValidatorModal({ isValidatorOpen ,ValidatorModalPosition
                 <h1
                  onClick={validateInput}
                  className="w-[15vw] font-pixelify text-1xl text-center text-[#BEDC7F] bg-[#112318] border border-[#BEDC7F] rounded p-3 cursor-pointer hover:bg-[#BEDC7F] hover:text-[#112318] mx-auto flex items-center justify-center">
-                    Apply Changes
+                    Validate
                 </h1>
+
+                
+
+                <div className='flex flex-row cursor-auto mt-[10px]'>
+
+                    <h1
+                        onClick={() => {setIsPalindrome(true)}}
+                        className="ml-[10px] w-[10vw] font-pixelify text-1xl text-center text-[#BEDC7F] bg-[#112318] border border-[#BEDC7F] rounded p-3 cursor-pointer hover:bg-[#BEDC7F] hover:text-[#112318] mx-auto flex items-center justify-center">
+                        WWR
+                    </h1>
+
+                    <h1
+                        onClick={() => {setIsPalindrome(false)}}
+                        className="mr-[10px] h-[10vh] w-[10vw] font-pixelify text-1xl text-center text-[#BEDC7F] bg-[#112318] border border-[#BEDC7F] rounded p-3 cursor-pointer hover:bg-[#BEDC7F] hover:text-[#112318] mx-auto flex items-center justify-center">
+                        !WWR
+                    </h1>
+                </div>
+                
+                
 
                 
             </div>

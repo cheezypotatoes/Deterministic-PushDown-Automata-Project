@@ -143,7 +143,7 @@ export default function InputPopUp({ isOpen, onClose, position , CloseModal, Cur
     return (
         <div
             className="w-[25vw] h-[55vh] flex flex-col cursor-auto"
-            style={{ position: 'absolute', top: position.y, left: position.x, userSelect: "none" }}>
+            style={{ position: 'absolute', top: position.y, left: position.x, userSelect: "none", zIndex: 3}}>
             
              {/* Background image */}
              <img src={ModalBackground} className="absolute w-full h-full object-cover" alt="Background" />

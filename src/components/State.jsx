@@ -12,68 +12,46 @@ export default function StateWidget({ state, stateName, positionSet, position, s
     const showConfig = useRef(false);
     const selfDiv = useRef(null);
     
-    const [test, setTest] = useState({ x:772.5, y: 138.5 }); // Test coordinates
-    const [svgPosition, setSvgPosition] = useState([{ top: 0, left: 0 }]);
-    const [svgDimensions, setSvgDimensions] = useState([{ width: 0, height: 0 }]);
     const [arrow, setArrow] = useState([])
 
+    const calculateLineCoordinates = (statePos) => {
+        if (!selfDiv.current) return { x1: 0, y1: 0, x2: 0, y2: 0 };
 
-    
-    
+        const rect = selfDiv.current.getBoundingClientRect();
+        const divCenterX = rect.left + rect.width / 2;
+        const divCenterY = rect.top + rect.height / 2;
 
-    // UseEffect to calculate the center of the div
-    useEffect(() => {
-        // Function to calculate line coordinates
-        const calculateLineCoordinates = (statePos) => {
-            if (!selfDiv.current) return { x1: 0, y1: 0, x2: 0, y2: 0 };
-    
-            const rect = selfDiv.current.getBoundingClientRect(); // Get the div's bounding box
-            const divCenterX = rect.left + rect.width / 2; // Calculate center X
-            const divCenterY = rect.top + rect.height / 2; // Calculate center Y
-    
-            const targetX = statePos.x - svgPosition[0]?.left + 30; // Adjust for SVG offset
-            const targetY = statePos.y - svgPosition[0]?.top + 30; // Adjust for SVG offset
-    
-            return {
-                x1: divCenterX - svgPosition[0]?.left, // Adjust to SVG's local coordinates
-                y1: divCenterY - svgPosition[0]?.top, // Adjust to SVG's local coordinates
-                x2: targetX, // Adjust to SVG's local coordinates
-                y2: targetY, // Adjust to SVG's local coordinates
-            };
+        // + 30 for accuracy
+        const targetX = statePos.x  + 30;
+        const targetY = statePos.y  + 30;
+
+        return {
+            x1: divCenterX, // Starting x
+            y1: divCenterY, // Starting y
+            x2: targetX, // target X
+            y2: targetY, // Target y
         };
+    };
 
     
-        // Main logic
+    useEffect(() => {
+        
+        // Get all states it can traverse
         const allSetTraverse = PushDownAutomataInstance.returnAllTrailState(stateName);
+        
         if (allSetTraverse === null) return;
     
-        console.log(allSetTraverse);
         const arrowArray = []
         for (const key in allSetTraverse) {
             const statePos = positionSet[allSetTraverse[key]];
-    
-            const minX = Math.min(position.x, statePos.x);
-            const minY = Math.min(position.y, statePos.y);
-            const maxX = Math.max(position.x, statePos.x);
-            const maxY = Math.max(position.y, statePos.y);
-    
-            // Update SVG position and dimensions
-            setSvgPosition((prevSvgPosition) => [
-                ...prevSvgPosition,
-                { top: minY, left: minX },
-            ]);
-            setSvgDimensions((prevSvgDimensions) => ({
-                ...prevSvgDimensions,
-                width: maxX - minX + 30,
-                height: maxY - minY + 30,
-            }));
-    
-            // Calculate line coordinates and update arrow state
+            console.log(statePos)
+            if (statePos === undefined) {continue}
             const { x1, y1, x2, y2 } = calculateLineCoordinates(statePos);
             arrowArray.push({ x1, y1, x2, y2 })
-            setArrow(arrowArray);
+            
         };
-    }, [position, test, stateName, positionSet]); // Removed unnecessary and problematic dependencies
+        setArrow(arrowArray);
+    }, [position, stateName, positionSet]);
     
 
     const handleDragStart = (e) => {
@@ -107,23 +85,22 @@ export default function StateWidget({ state, stateName, positionSet, position, s
     }
 
     
-    
-    
     return (
         <>
-
+         
         <svg
             id="lineArrow"
             width="100%"
             height="100%"
             style={{
                 position: "absolute",
-                top: svgPosition[0]?.top,
-                left: svgPosition[0]?.left,
+                top: 0,
+                left: 0,
                 pointerEvents: "none",
                 zIndex: 1,
-            }}
-        >
+            }}>
+
+            {/* Arrow lines */}
             {arrow.map((line, index) => (
                 <line
                     key={index}
@@ -132,20 +109,14 @@ export default function StateWidget({ state, stateName, positionSet, position, s
                     y1={line.y1}
                     x2={line.x2}
                     y2={line.y2}
-                    stroke="white"
+                    stroke="#bedc7f"
                     strokeWidth="1"
-                    markerEnd="url(#arrowhead)"
                 />
             ))}
-            <defs>
-                <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="0" refY="3" orient="auto">
-                    <polygon points="0,0 10,3 0,6" fill="white" />
-                </marker>
-            </defs>
         </svg>
                     
 
-        <div ref={selfDiv} style={{ position: 'absolute', top: position.y, left: position.x }}>
+        <div ref={selfDiv} style={{ position: 'absolute', top: position.y, left: position.x, zIndex: 2 }}>
         
         {/* Configuration Button */}
         <img

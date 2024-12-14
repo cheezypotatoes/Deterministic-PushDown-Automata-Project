@@ -1,4 +1,4 @@
-import stateImg from "../assets/images/StateImg.png";
+import stateImg from "../assets/images/State.png";
 import StateWidget from "./State";
 import PropTypes from 'prop-types';
 import InputPopUp from "./InputPopUp";

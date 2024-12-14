@@ -136,9 +136,21 @@ export default function StateWidget({ state, stateName, positionSet, position, s
 
        
         {/* State Image */}
+        
         <img
-            onMouseLeave={(e) => { e.target.src = state.src }}
-            onMouseEnter={(e) => { e.target.src = StateImgHover; e.target.style.cursor = "grab" }}
+            onMouseLeave={(e) => { 
+                e.target.src = state.src;
+                const span = e.target.nextElementSibling; // Select the span element
+                if (span) span.style.color = "#4d8061";
+            }}
+            onMouseEnter={(e) => { 
+                e.target.src = StateImgHover; 
+                e.target.style.cursor = "grab";
+                e.target.style.color = "#bedc7f";
+                const span = e.target.nextElementSibling; // Select the span element
+                if (span) span.style.color = "#bedc7f"; // Change color
+            }}
+
             onClick={ClickStateImg}
             onMouseDown={handleMouseDown}
             key={state.id}
@@ -147,7 +159,19 @@ export default function StateWidget({ state, stateName, positionSet, position, s
             className="w-stateSize h-stateSize"
             alt="State Image"
         />
+        <span
+            style={{
+                position: 'absolute',
+                top: '49%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                pointerEvents: 'none',
+            }}
+            className='font-pixelify text-3xl text-center text-[#4d8061]'
+        > {stateName}</span>
+
     </div>
+    
 
     </>
     );

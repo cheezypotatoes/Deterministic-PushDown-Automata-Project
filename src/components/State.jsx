@@ -110,7 +110,7 @@ export default function StateWidget({ state, stateName, positionSet, position, s
                     x2={line.x2}
                     y2={line.y2}
                     stroke="#bedc7f"
-                    strokeWidth="1"
+                    strokeWidth="5"
                 />
             ))}
         </svg>

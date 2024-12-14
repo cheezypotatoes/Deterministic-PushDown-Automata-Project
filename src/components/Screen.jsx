@@ -111,6 +111,7 @@ export default function Screen({showModal, CloseModal, isModalOpen, isValidatorO
     
             // Constrain the newY to not go past the top or bottom boundaries of the ScreenDrop div
             newY = Math.max(screenDimension.top, Math.min(newY, screenDimension.top + screenHeight - modalHeight));
+
         } else if (name === "validatorModal") {
             console.log(name)
             const screenWidth = screenDimension.width;
@@ -151,7 +152,7 @@ export default function Screen({showModal, CloseModal, isModalOpen, isValidatorO
     return (
         <>
 
-            <div className="flex justify-center items-center h-[80vh] w-[90vw]"
+    <div className="flex justify-center items-center h-[80vh] w-[90vw]"
             id="MonitorWidgetHolder"
             style={{ userSelect: 'none' }}
             onDragOver={handleDragOver}
@@ -162,12 +163,14 @@ export default function Screen({showModal, CloseModal, isModalOpen, isValidatorO
                     <StateWidget 
                     key={state.id} 
                     state={state} 
-                    stateName={state.id} 
+                    stateName={state.id}
+                    positionSet = {positions}
                     position={positions[state.id]}
                     showModal={showModal}
                     CloseModal={CloseModal}
                     isModalOpen={isModalOpen}
-                    CurrentlySelecting={CurrentlySelecting}/>
+                    CurrentlySelecting={CurrentlySelecting}
+                    positions={positions}/>
                 ))}
 
                 <InputPopUp 

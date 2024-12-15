@@ -8,6 +8,7 @@ import { useState } from 'react';
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isValidatorOpen, setIsValidatorOpen] = useState(false);
+  const [isAdminPanelOpen, setIsAdminPanelOpen] = useState(false);
 
   function showModal() {
     setIsModalOpen(true)
@@ -23,6 +24,12 @@ function App() {
     } else {setIsValidatorOpen(true)}
   }
 
+  function ShowAdmin() {
+    if (isAdminPanelOpen) {
+      setIsAdminPanelOpen(false)
+    } else {setIsAdminPanelOpen(true)}
+  }
+
 
   return (
     <div className="bg-[#1e3a29]" id="MainBackground">
@@ -31,7 +38,7 @@ function App() {
         style={{backgroundImage: `url(${frame})`, imageRendering: 'pixelated'}} id="Monitor">
           
         <Screen showModal={showModal} CloseModal={CloseModal} isModalOpen={isModalOpen}
-        isValidatorOpen={isValidatorOpen} ShowValidator={ShowValidator}/>
+        isValidatorOpen={isValidatorOpen} ShowValidator={ShowValidator} isAdminPanelOpen={isAdminPanelOpen} ShowAdmin={ShowAdmin}/>
         
        
         

@@ -48,6 +48,7 @@ export default function ValidatorModal({ isValidatorOpen ,ValidatorModalPosition
                 <h1 className="font-pixelify text-3xl w-full text-center text-[#BEDC7F]">{`Input: ${result}`}</h1>
                 <form className="flex flex-col items-start p-4 space-y-3 z-10 w-full">
                         <input
+                            autoComplete="off"
                             type="text"
                             name="Input"
                             onChange={(e) => {setInput(e.target.value); if (e.target.value.length == 0) {setResult("")}}}

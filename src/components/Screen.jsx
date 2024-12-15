@@ -3,22 +3,53 @@ import StateWidget from "./State";
 import PropTypes from 'prop-types';
 import InputPopUp from "./InputPopUp";
 import ValidatorModal from "./InputValidator"
+import AdminPopUp from "./AdminPopUp";
 import {Node, PushDownAutomataInstance} from "../functions/PushDownAutomata"
 
 import { useState, useEffect, useRef } from 'react';
 
 
 
-export default function Screen({showModal, CloseModal, isModalOpen, isValidatorOpen, ShowValidator}) {
+export default function Screen({showModal, CloseModal, isModalOpen, isValidatorOpen, ShowValidator, isAdminPanelOpen, ShowAdmin}) {
 
     const [statesOnScreen, SetStatesOnScreen] = useState([]);
     const [positions, setPositions] = useState({});
     const ScreenDrop = useRef(null);
     const stateCount = useRef(-1);
     const CurrentlySelecting = useRef(null);
+
+    function CreateState(traverse, pop, push) {
+        stateCount.current += 1;
+        const Name = `Q${stateCount.current}`
+
+        // Create Node
+        const StateNode = new Node(Name)
+        PushDownAutomataInstance.addState(StateNode.stateName, StateNode)
+        PushDownAutomataInstance.addStateCondition(StateNode.stateName, traverse, pop, push)
+
+        const NewState = {
+            id: Name,
+            src: stateImg,
+            // Get its push, pop, to traverse directly
+            push: PushDownAutomataInstance.returnPush(StateNode.stateName),
+            pop: PushDownAutomataInstance.returnPop(StateNode.stateName),
+            toTraverse: PushDownAutomataInstance.returnTraverseNode(StateNode.stateName),
+        };
+        SetStatesOnScreen((prevStates) => [...prevStates, NewState]);
+
+        setPositions((prevPositions) => ({
+            ...prevPositions,
+            [Name]: {x: window.innerWidth / 2, y: window.innerHeight / 2}, // Default location
+            }));
+    }
     
     
     useEffect(() => {
+
+        setPositions((prevPositions) => ({
+            ...prevPositions,
+            ["AdminPopUp"]: {x: window.innerWidth / 2 - 300, y: window.innerHeight / 2 - 200}, // Default location
+        }));
 
         setPositions((prevPositions) => ({
             ...prevPositions,
@@ -32,33 +63,13 @@ export default function Screen({showModal, CloseModal, isModalOpen, isValidatorO
 
         const addState = (event) => {
             if (event.key == "p") {     
-
-                stateCount.current += 1;
-                const Name = `Q${stateCount.current}`
-
-                // Create Node
-                const StateNode = new Node(Name)
-                PushDownAutomataInstance.addState(StateNode.stateName, StateNode)
-                PushDownAutomataInstance.addStateCondition(StateNode.stateName, null, null, null)
-
-                const NewState = {
-                    id: Name,
-                    src: stateImg,
-                    // Get its push, pop, to traverse directly
-                    push: PushDownAutomataInstance.returnPush(StateNode.stateName),
-                    pop: PushDownAutomataInstance.returnPop(StateNode.stateName),
-                    toTraverse: PushDownAutomataInstance.returnTraverseNode(StateNode.stateName),
-                };
-                SetStatesOnScreen((prevStates) => [...prevStates, NewState]);
-
-                setPositions((prevPositions) => ({
-                    ...prevPositions,
-                    [Name]: {x: window.innerWidth / 2, y: window.innerHeight / 2}, // Default location
-                  }));
+                CreateState(null, null, null)
             } else if (event.key == "o") { // Debugging
                 PushDownAutomataInstance.printStateInfos()
             } else if (event.key == "i") {
                 ShowValidator()
+            } else if (event.key == "y") {
+                ShowAdmin()
             }
         };
     
@@ -72,7 +83,7 @@ export default function Screen({showModal, CloseModal, isModalOpen, isValidatorO
 
 
 
-      }, [statesOnScreen, ShowValidator]);
+      }, [statesOnScreen, ShowValidator, ShowAdmin]);
 
     const handleDragOver = (e) => {
         e.preventDefault();
@@ -183,6 +194,12 @@ export default function Screen({showModal, CloseModal, isModalOpen, isValidatorO
                <ValidatorModal 
                isValidatorOpen={isValidatorOpen}
                ValidatorModalPosition={positions["validatorModal"]} />
+
+               <AdminPopUp 
+               isAdminPanelOpen={isAdminPanelOpen}
+               AdminPopUpPosition={positions["AdminPopUp"]}
+               CreateState={CreateState}
+               />
                 
               
 
@@ -198,6 +215,8 @@ Screen.propTypes = {
     CloseModal: PropTypes.func.isRequired,
     isModalOpen: PropTypes.bool.isRequired,
     isValidatorOpen: PropTypes.bool.isRequired,
+    isAdminPanelOpen: PropTypes.bool.isRequired,
     ShowValidator: PropTypes.func.isRequired,
+    ShowAdmin: PropTypes.func.isRequired,
 
 };
